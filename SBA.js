@@ -136,14 +136,41 @@ function calculateLatePenalty(submissionDate, dueDate, pointsPossible) {
   */
 
 
-  
+
 // Function to get the Laerner's data using given parameters  
-  function getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions) {
+function getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions) 
+{
+    const learners = {};
+
+    //Define construct 'submission' 
+    //Also displays error message when Assignment ID is not in the list of data provided
+    for (const submission of LearnerSubmissions) {
+        const assignment = AssignmentGroup.assignments.find(assignment => assignment.id === submission.assignment_id);
+        /*  if (!assignment) {
+              console.warn(`Assignment ${submission.assignment_id} not found in AssignmentGroup.`);
+              continue;
+          }*/
+
+        const latePenalty = calculateLatePenalty(submission.submission.submitted_at, assignment.due_at, assignment.points_possible);
+        const scorePercentage = calculateScorePercentage(submission.submission.score, assignment.points_possible, latePenalty);
+
+        if (!learners[submission.learner_id]) 
+        {
+            learners[submission.learner_id] = {
+                id: submission.learner_id,
+                totalScore: 0,
+                totalPossibleScore: 0,
+                totalWeightedScore: 0,
+                totalWeight: 0,
+                assignments: {}
+            };
+        }
 
 
-  }
 
+    }
 
+}
 
 
 // Test and display results of the function with data provided and defined in 
