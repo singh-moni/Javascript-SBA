@@ -136,8 +136,12 @@ function calculateLatePenalty(submissionDate, dueDate, pointsPossible) {
   */
 
 
+  
 // Function to get the Laerner's data using given parameters  
-  function getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions) {}
+  function getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions) {
+
+
+  }
 
 
 
@@ -146,3 +150,4 @@ function calculateLatePenalty(submissionDate, dueDate, pointsPossible) {
 // Course Info, AssignmentGroup and LearnerSubmissions objects
 const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
 console.log(result);
+
