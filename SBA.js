@@ -105,7 +105,6 @@ const CourseInfo = {
 
 
 // Function to calculate penalty for late submissions
-
 function calculateLatePenalty(submissionDate, dueDate, pointsPossible) {
     const submissionTimestamp = new Date(submissionDate).getTime();
     const dueTimestamp = new Date(dueDate).getTime();
@@ -119,3 +118,31 @@ function calculateLatePenalty(submissionDate, dueDate, pointsPossible) {
         }
     return 0;
   }
+
+
+
+// Function to calculate score percentage less the late penalty 
+  function calculateScorePercentage(score, pointsPossible, latePenalty) {
+    const adjustedScore = Math.max(0, score - latePenalty);
+    return adjustedScore / pointsPossible;
+  
+  }
+
+  /* 
+  calculateScorePercentage(48, 50, 5) {
+    const adjustedScore = Math.max(0, 48 - 5);
+    return adjustedScore / pointsPossible;
+  }
+  */
+
+
+// Function to get the Laerner's data using given parameters  
+  function getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions) {}
+
+
+
+
+// Test and display results of the function with data provided and defined in 
+// Course Info, AssignmentGroup and LearnerSubmissions objects
+const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
+console.log(result);
