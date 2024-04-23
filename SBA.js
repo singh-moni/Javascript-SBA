@@ -137,10 +137,10 @@ function calculateLatePenalty(submissionDate, dueDate, pointsPossible) {
 
 
 
-// Function to get the Laerner's data using given parameters  
+// Function to get the Learner's data using given parameters  
 function getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions) 
 {
-    const learners = {};
+    const learnersMap = {};
 
     //Define construct 'submission' 
     //Also displays error message when Assignment ID is not in the list of data provided
@@ -154,9 +154,9 @@ function getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions)
         const latePenalty = calculateLatePenalty(submission.submission.submitted_at, assignment.due_at, assignment.points_possible);
         const scorePercentage = calculateScorePercentage(submission.submission.score, assignment.points_possible, latePenalty);
 
-        if (!learners[submission.learner_id]) 
+        if (!learnersMap[submission.learner_id]) 
         {
-            learners[submission.learner_id] = {
+            learnersMap[submission.learner_id] = {
                 id: submission.learner_id,
                 totalScore: 0,
                 totalPossibleScore: 0,
@@ -166,15 +166,32 @@ function getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions)
             };
         }
 
-
-
-    }
+        const learner = learnersMap[submission.learner_id];
+        learner.totalScore += submission.submission.score;
+        learner.totalPossibleScore += assignment.points_possible;
+        learner.totalWeightedScore += scorePercentage * AssignmentGroup.group_weight;
+        learner.totalWeight += AssignmentGroup.group_weight;
+        learner.assignments[assignment.id] = scorePercentage;
+      }
+    
+      for (const learnerId in learnersMap) {
+        const learner = learnersMap[learnerId];
+        learner.avg = learner.totalWeight !== 0 ? learner.totalWeightedScore / learner.totalWeight : learner.totalScore / learner.totalPossibleScore;
+        delete learner.totalScore;
+        delete learner.totalPossibleScore;
+        delete learner.totalWeightedScore;
+        delete learner.totalWeight;
+      }
+    
+      return Object.values(learnersMap)
 
 }
+
 
 
 // Test and display results of the function with data provided and defined in 
 // Course Info, AssignmentGroup and LearnerSubmissions objects
 const result = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmissions);
 console.log(result);
+
 
